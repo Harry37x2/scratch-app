@@ -33,12 +33,103 @@ body {
 
 .grid {
   display: grid;
-  gap: 1rem;
+  gap: 1.5rem;
   grid-template-columns: repeat(5, 1fr);
   margin: 2rem 0;
 }
+/* GridElement */
 
-.gridElement {
+.card {
+  display: grid;
+  grid-template-columns: 9rem;
+  grid-template-rows: 5rem 7rem 3rem;
+  grid-template-areas: "image" "text" "stats";
+
+  border-radius: 18px;
+  background: white;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.9);
+  /* font-family: roboto; */
+  text-align: center;
+
+  transition: 0.5s ease;
+}
+
+.card-image {
+  grid-area: image;
+  /* background: url("img1.jpg"); */
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  background-size: cover;
+  background-color: lightgray;
+  cursor: pointer;
+}
+
+.card-text {
+  grid-area: text;
+  margin: 25px;
+}
+
+.card-text .date {
+  color: rgb(255, 7, 110);
+  font-size: 13px;
+}
+
+.card-text p {
+  color: grey;
+  font-size: 15px;
+  font-weight: 300;
+}
+
+.card-text h2 {
+  margin-top: 0px;
+  font-size: 28px;
+}
+
+.card-stats {
+  grid-area: stats;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  background: rgb(255, 7, 110);
+}
+
+.card-stats .stat {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: white;
+}
+
+.card-stats .border {
+  border-left: 1px solid rgb(172, 26, 87);
+  /* border-right: 1px solid rgb(172, 26, 87); */
+}
+
+.card-stats .value {
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.card-stats .value sup {
+  font-size: 12px;
+}
+
+.card-stats .type {
+  font-size: 11px;
+  font-weight: 300;
+  text-transform: uppercase;
+}
+
+.card:hover {
+  transform: scale(1.15);
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.6);
+}
+
+/* .gridElement {
   display: block;
   height: 100px;
   width: 100px;
@@ -52,7 +143,6 @@ body {
   background-color: transparent;
   border: none;
   width: 100%;
-  /* top: 3rem; */
   cursor: pointer;
   opacity: 0.0;
   -webkit-transition: all 500ms ease-in-out;
@@ -64,7 +154,7 @@ body {
 
 .gridElement:hover .scratchButton {
   opacity: 1.0;
-}
+} */
 
 /* BigCart */
 .modalBackground {
@@ -73,7 +163,7 @@ body {
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: red;
+  background: rgba(255, 255, 255, 0.6);
   position: fixed;
   display: flex;
   justify-content: center;

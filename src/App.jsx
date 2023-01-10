@@ -8,13 +8,19 @@ function App() {
   const [scratches, setScratches] = useState([
     {
       id: 1,
-      scratched: false,
-      text: 'cook together'
+      text: 'cook together', 
+      scratchDate: '03.03.2022', 
+      liked: true,
+      likes: 10,
+      finished: 10
     },
     {
       id: 2,
-      scratched: false,
-      text: 'movie night'
+      text: 'movie night',
+      scratchDate: '', 
+      liked: false,
+      likes: 0,
+      finished: 0
     },
     {
       id: 3,
@@ -34,84 +40,48 @@ function App() {
     {
       id: 6,
       scratched: false,
-      text: 'drugi'
+      text: 'create your own tradition'
     },
     {
       id: 7,
       scratched: false,
-      text: 'drugi'
+      text: 'retake an old photo'
     },
     {
       id: 8,
       scratched: false,
-      text: 'drugi'
+      text: 'charity activity'
     },
     {
       id: 9,
       scratched: false,
-      text: 'drugi'
+      text: 'romantic breakfast'
     },
     {
       id: 10,
       scratched: false,
-      text: 'drugi'
-    },
-    {
-      id: 11,
-      scratched: false,
-      text: 'drugi'
-    },
-    {
-      id: 12,
-      scratched: false,
-      text: 'drugi'
-    },
-    {
-      id: 13,
-      scratched: false,
-      text: 'drugi'
-    },
-    {
-      id: 14,
-      scratched: false,
-      text: 'drugi'
-    },
-    {
-      id: 15,
-      scratched: false,
-      text: 'drugi'
-    },
-    {
-      id: 16,
-      scratched: false,
-      text: 'drugi'
-    },
-    {
-      id: 17,
-      scratched: false,
-      text: 'drugi'
-    },
-    {
-      id: 18,
-      scratched: false,
-      text: 'drugi'
-    },
-    {
-      id: 19,
-      scratched: false,
-      text: 'drugi'
-    },
-    {
-      id: 20,
-      scratched: false,
-      text: 'drugi'
+      text: 'prank someone'
     }
   ])
   const [modalOpen, setModalOpen] = useState(false);
   const [handleId, setHandleId] = useState('');
 
-  const handleScratched = (id) => {
-    const scratchesList = scratches.map((item) => item.id === id ? {...item, scratched: !item.scratched} : item)
+  const handleLike = (id) => {
+    const likedList = scratches.map((item) => item.id === id ? 
+    {...item, 
+      likes: ++item.likes, 
+      liked: true} 
+    : item)
+    setScratches(likedList);
+  } 
+
+  const handleScratched = (id, currentDate) => {
+    const scratchesList = scratches.map((item) => item.id === id ? 
+    {...item, 
+      scratched: true, 
+      scratchDate: currentDate, 
+      finished: +1} 
+    : item)
     setScratches(scratchesList);
   } 
 
@@ -122,13 +92,17 @@ function App() {
         scratches={scratches}
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}
+        handleId={handleId}
         setHandleId={setHandleId}
+        handleLike={handleLike}
       />
       {modalOpen && 
-        <BigCart 
+        <BigCart          
+          scratches={scratches}
+          handleScratched={handleScratched}
           setModalOpen={setModalOpen}
           handleId={handleId}
-          handleScratched={handleScratched}
+          setHandleId={setHandleId}
         />}
     </div>
   )

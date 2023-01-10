@@ -1,8 +1,7 @@
 import React from 'react'
 import GridElement from './GridElement'
-import BigCart from './BigCart'
 
-const Grid = ({scratches, modalOpen, setModalOpen, setHandleId}) => {
+const Grid = ({scratches, modalOpen, setModalOpen, setHandleId, handleId, handleLike}) => {
   return (
     <div className='grid'>
         {scratches.map((scratch)=>(
@@ -12,6 +11,8 @@ const Grid = ({scratches, modalOpen, setModalOpen, setHandleId}) => {
                 modalOpen={modalOpen}
                 setModalOpen={setModalOpen}
                 setHandleId={setHandleId}
+                handleId={handleId}
+                handleLike={handleLike}
             />
         ))}        
     </div>
