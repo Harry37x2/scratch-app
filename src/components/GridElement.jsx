@@ -1,4 +1,5 @@
 import React from 'react'
+import styles from './gridElement.module.css'
 import {FcLikePlaceholder,FcLike} from 'react-icons/fc'
 
 const GridElement = ({scratch, setModalOpen, setHandleId, handleId, handleLike}) => {
@@ -6,11 +7,12 @@ const GridElement = ({scratch, setModalOpen, setHandleId, handleId, handleLike})
   return (
 
     <div 
-      className="card"
+      className={styles.card}
       key={scratch.id}
     >
       <div 
-        className="card-image" 
+        // className={scratch.scratchDate ? [[styles["card-image"]],[styles["scratched"]]].join(' ') : styles["card-image"]}
+        className={styles["card-image"]} 
         onClick={() => {
             setModalOpen(true);
             setHandleId(scratch.id);
@@ -21,8 +23,8 @@ const GridElement = ({scratch, setModalOpen, setHandleId, handleId, handleLike})
       >
           
       </div>
-      <div className="card-text">
-        <span className="date">{scratch.scratchDate ? `${scratch.scratchDate}` : 'data'}</span>
+      <div className={styles["card-text"]}>
+        <span className={styles.data}>{scratch.scratchDate ? `${scratch.scratchDate}` : 'data'}</span>
         <h2>{scratch.text}</h2>
         {scratch.liked ? 
         <FcLikePlaceholder/> 
@@ -34,14 +36,14 @@ const GridElement = ({scratch, setModalOpen, setHandleId, handleId, handleLike})
           }}/>}
         
       </div>
-      <div className="card-stats">
-        <div className="stat">
-          <div className="value">{scratch.likes}</div>
-          <div className="type">Likes</div>
+      <div className={styles["card-stats"]}>
+        <div className={styles.stat}>
+          <div className={styles.value}>{scratch.likes}</div>
+          <div className={styles.type}>Likes</div>
         </div>
-        <div className="stat border">
-          <div className="value">{scratch.finished}</div>
-          <div className="type">finished:</div>
+        <div className={`${styles.stat} ${styles.border}`}>
+          <div className={styles.value}>{scratch.finished}</div>
+          <div className={styles.type}>finished:</div>
         </div>
         {/* <div class="stat">
           <div class="value">21</div>

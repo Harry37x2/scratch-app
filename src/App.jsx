@@ -1,8 +1,8 @@
 import './App.css'
-import Header from './Header'
-import Grid from './Grid'
+import Header from './components/Header'
+import Grid from './components/Grid'
+import BigCart from './components/BigCart'
 import {useState} from 'react'
-import BigCart from './BigCart'
 
 function App() {
   const [scratches, setScratches] = useState([

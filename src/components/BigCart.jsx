@@ -1,13 +1,14 @@
 import React from 'react'
+import styles from './bigCart.module.css'
 
 const BigCart = ({scratches, setModalOpen, handleId, setHandleId, handleScratched}) => {
   const current = scratches.filter(each => each.id === handleId);
   const currentDate = new Date().toLocaleDateString();
 
   return (
-    <div className="modalBackground">
-      <div className="modalContainer">
-        <div className="titleCloseBtn">
+    <div className={styles.modalBackground}>
+      <div className={styles.modalContainer}>
+        <div className={styles.titleCloseBtn}>
           <button
             onClick={() => {
               setModalOpen(false);
@@ -17,20 +18,20 @@ const BigCart = ({scratches, setModalOpen, handleId, setHandleId, handleScratche
             X
           </button>
         </div>
-        <div className="title">
+        <div className={styles.title}>
           <h1>{current[0].text}</h1>
           {/* {console.log(current)} */}
         </div>
-        <div className="body">
+        <div className={styles.body}>
           <p>id: {handleId}</p>
         </div>
-        <div className="footer">
+        <div className={styles.footer}>
           <button
             onClick={() => {
               setModalOpen(false);              
               setHandleId('')
             }}
-            id="cancelBtn"
+            id={styles.cancelBtn}
           >
             Not now
           </button>
