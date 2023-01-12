@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './gridElement.module.css'
-import {FcLikePlaceholder,FcLike} from 'react-icons/fc'
+import {FcLikePlaceholder, FcLike, FcDislike} from 'react-icons/fc'
 
 const GridElement = ({scratch, setModalOpen, setHandleId, handleId, handleLike}) => {
   
@@ -24,17 +24,21 @@ const GridElement = ({scratch, setModalOpen, setHandleId, handleId, handleLike})
           
       </div>
       <div className={styles["card-text"]}>
-        <span className={styles.data}>{scratch.scratchDate ? `${scratch.scratchDate}` : 'data'}</span>
+        <span className={styles.date}>{scratch.scratchDate ? `${scratch.scratchDate}` : 'data'}</span>
         <h2>{scratch.text}</h2>
-        {scratch.liked ? 
-        <FcLikePlaceholder/> 
-        : 
-        <FcLike
-          onClick={()=>{    
-            setHandleId(scratch.id);         
-            handleLike(handleId);
-          }}/>}
         
+        {scratch.scratchDate ? 
+          scratch.liked ? 
+          <FcLike/> 
+          : 
+          <FcLikePlaceholder
+            onClick={()=>{
+              handleLike(scratch.id)
+            }}
+          /> 
+        : 
+        <FcDislike/>}
+       
       </div>
       <div className={styles["card-stats"]}>
         <div className={styles.stat}>

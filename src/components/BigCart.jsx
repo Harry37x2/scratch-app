@@ -20,7 +20,6 @@ const BigCart = ({scratches, setModalOpen, handleId, setHandleId, handleScratche
         </div>
         <div className={styles.title}>
           <h1>{current[0].text}</h1>
-          {/* {console.log(current)} */}
         </div>
         <div className={styles.body}>
           <p>id: {handleId}</p>

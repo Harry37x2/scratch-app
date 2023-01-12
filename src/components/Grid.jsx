@@ -11,9 +11,10 @@ const Grid = ({scratches, modalOpen, setModalOpen, setHandleId, handleId, handle
                 scratch={scratch}
                 modalOpen={modalOpen}
                 setModalOpen={setModalOpen}
-                setHandleId={setHandleId}
                 handleId={handleId}
+                setHandleId={setHandleId}
                 handleLike={handleLike}
+                
             />
         ))}        
     </div>
