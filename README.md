@@ -13,6 +13,7 @@ Features that will be added:
 - selecting random 10 scratches per user
 - user scratches on lazy loading
 - adding you photo for each scratch after finishing
+- useContext
 
 What i used and learned:
 

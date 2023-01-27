@@ -1,17 +1,14 @@
 import React from 'react'
 import GridElement from './GridElement'
-import styles from './grid.module.css'
+import styles from './userScratches.module.css'
 
-const Grid = ({scratches, modalOpen, setModalOpen, setHandleId, handleId, handleLike}) => {
+const UserScratches = ({scratches, setHandleId, handleLike}) => {
   return (
     <div className={styles.grid}>
         {scratches.map((scratch)=>(
             <GridElement 
                 key={scratch.id}
                 scratch={scratch}
-                modalOpen={modalOpen}
-                setModalOpen={setModalOpen}
-                handleId={handleId}
                 setHandleId={setHandleId}
                 handleLike={handleLike}
                 
@@ -21,4 +18,4 @@ const Grid = ({scratches, modalOpen, setModalOpen, setHandleId, handleId, handle
   )
 }
 
-export default Grid
+export default UserScratches

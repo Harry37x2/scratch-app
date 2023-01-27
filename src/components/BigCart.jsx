@@ -3,7 +3,7 @@ import styles from './bigCart.module.css'
 import {Link, useParams } from 'react-router-dom';
 import Sketch from 'react-p5';
 
-const BigCart = ({scratches, setModalOpen, handleId, setHandleId, handleScratched}) => {
+const BigCart = ({scratches, handleScratched}) => {
   const { scratchId } = useParams();
   const scratchIdParseInt = parseInt(scratchId);
 

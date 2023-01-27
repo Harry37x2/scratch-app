@@ -1,11 +1,9 @@
 import './App.css';
 import apiRequest  from './apiRequest';
-import Header from './pages/Header';
-import Grid from './components/Grid';
+import UserScratches from './components/UserScratches';
 import BigCart from './components/BigCart';
 import {useState, useEffect} from 'react';
 import { BrowserRouter, Routes, Route  } from 'react-router-dom';
-import GridElement from './components/GridElement';
 import SharedLayout from './pages/SharedLayout';
 import Loading from './components/Loading';
 import Error from './components/Error';
@@ -14,7 +12,6 @@ function App() {
   const API_URL = 'http://localhost:3000/scratches';
 
   const [scratches, setScratches] = useState([]);
-  const [modalOpen, setModalOpen] = useState(false);
   const [handleId, setHandleId] = useState('');
   const [fetchError, setFetchError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -96,10 +93,8 @@ function App() {
               isLoading ? <Loading/> :
               fetchError ? <Error/> :
               !fetchError && !isLoading && 
-            <Grid
+            <UserScratches
               scratches={scratches}
-              modalOpen={modalOpen}
-              setModalOpen={setModalOpen}
               handleId={handleId}
               setHandleId={setHandleId}
               handleLike={handleLike}/>
@@ -108,7 +103,6 @@ function App() {
             <BigCart
               scratches={scratches}
               handleScratched={handleScratched}
-              setModalOpen={setModalOpen}
               handleId={handleId}
               setHandleId={setHandleId}/>
             }/>
