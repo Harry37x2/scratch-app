@@ -1,20 +1,25 @@
 /* GridElement */
+
+a {
+    text-decoration: none;
+}
 .card {
     display: grid;
     grid-template-columns: 8rem;
     grid-template-rows: 6rem 7rem 3rem;
     grid-template-areas: "image" "text" "stats";
-
+    
     border-radius: 18px;
     background: white;
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.9);
     /* font-family: roboto; */
     text-align: center;
-
+    
     transition: 0.5s ease;
 }
 
 .card-image {
+    height: 100%;
     grid-area: image;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;

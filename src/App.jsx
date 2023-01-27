@@ -1,12 +1,17 @@
 import './App.css';
 import apiRequest  from './apiRequest';
-import Header from './components/Header';
+import Header from './pages/Header';
 import Grid from './components/Grid';
 import BigCart from './components/BigCart';
 import {useState, useEffect} from 'react';
+import { BrowserRouter, Routes, Route  } from 'react-router-dom';
+import GridElement from './components/GridElement';
+import SharedLayout from './pages/SharedLayout';
+import Loading from './components/Loading';
+import Error from './components/Error';
 
 function App() {
-  const API_URL = 'http://localhost:3500/scratches';
+  const API_URL = 'http://localhost:3000/scratches';
 
   const [scratches, setScratches] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
@@ -30,7 +35,7 @@ function App() {
     }
     setTimeout(()=>{
       (async () => await fetchItems())();
-    }, 1000)
+    }, 500)
   },[])
 
   const handleLike = async (id) => {
@@ -65,7 +70,7 @@ function App() {
     : item)
     setScratches(scratchesList);
 
-    const myItem = scratchesList.filter((item)=> item.id===id);
+    const myItem = scratchesList.filter((item)=> item.id === id);
     const updateOptions = {
       method: 'PATCH',
       headers: {
@@ -84,26 +89,32 @@ function App() {
 
   return (
     <div className="App">
-      <Header />
-      {isLoading && <p>Loading Your scratches...</p>}
-      {fetchError && <p>{`Error: ${fetchError}`}</p>}
-      {!fetchError && !isLoading && 
-        <Grid 
-          scratches={scratches}
-          modalOpen={modalOpen}
-          setModalOpen={setModalOpen}
-          handleId={handleId}
-          setHandleId={setHandleId}
-          handleLike={handleLike}
-        />}
-      {modalOpen && 
-        <BigCart          
-          scratches={scratches}
-          handleScratched={handleScratched}
-          setModalOpen={setModalOpen}
-          handleId={handleId}
-          setHandleId={setHandleId}
-        />}
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<SharedLayout/>}>
+            <Route index element={
+              isLoading ? <Loading/> :
+              fetchError ? <Error/> :
+              !fetchError && !isLoading && 
+            <Grid
+              scratches={scratches}
+              modalOpen={modalOpen}
+              setModalOpen={setModalOpen}
+              handleId={handleId}
+              setHandleId={setHandleId}
+              handleLike={handleLike}/>
+            }/>
+            <Route path='BigCart/:scratchId' element={
+            <BigCart
+              scratches={scratches}
+              handleScratched={handleScratched}
+              setModalOpen={setModalOpen}
+              handleId={handleId}
+              setHandleId={setHandleId}/>
+            }/>
+            </Route>
+        </Routes>
+      </BrowserRouter>
     </div>
   )
 }

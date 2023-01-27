@@ -1,22 +1,9 @@
 /* BigCart */
-.modalBackground {
-    /* visibility: hidden; */
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background: rgba(255, 255, 255, 0.6);
-    position: fixed;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 .modalContainer {
     width: 500px;
     height: 500px;
     border-radius: 12px;
-    background-color: white;
+    background-color:white;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     display: flex;
     flex-direction: column;
@@ -50,6 +37,14 @@
     text-align: center;
 }
 
+.card-image {
+    height: 100%;
+    border-radius: 10px;
+    background-size: cover;
+    background-color: lightgray;
+    cursor: pointer;
+}
+
 .modalContainer .footer {
     flex: 20%;
     display: flex;
@@ -72,3 +67,15 @@
 #cancelBtn {
     background-color: crimson;
 }
+
+/* canvas {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+    z-index: 10;
+    background-color:white;
+    border: 10px red solid;
+    mix-blend-mode: screen;
+} */
