@@ -14,7 +14,7 @@ const BigCart = ({scratches, handleScratched}) => {
   return (
       <div className={styles.modalContainer}>
         <div className={styles.titleCloseBtn}>
-          <Link to={'/'}>go Back</Link>
+          <Link to={'/userScratches'}>go Back</Link>
         </div>
         <div className={styles.title}>
           <h1>{scratchDate}</h1>
@@ -29,7 +29,7 @@ const BigCart = ({scratches, handleScratched}) => {
           >  
           </div>
         <div className={styles.footer}>
-          <Link to={'/'}>go Back</Link>
+          <Link to={'/userScratches'}>go Back</Link>
           <button
             onClick={() => {
               handleScratched(scratchIdParseInt, currentDate);

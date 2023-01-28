@@ -3,10 +3,10 @@
 a {
     text-decoration: none;
 }
-.card {
+.fullCard {
     display: grid;
     grid-template-columns: 8rem;
-    grid-template-rows: 6rem 7rem 3rem;
+    grid-template-rows: 6rem 8rem 3rem;
     grid-template-areas: "image" "text" "stats";
     
     border-radius: 18px;
@@ -64,7 +64,7 @@ a {
 }
 
 .card-stats .stat {
-    padding: 10px;
+    /* padding: 10px; */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -74,7 +74,6 @@ a {
 
 .card-stats .border {
     border-left: 1px solid rgb(172, 26, 87);
-    /* border-right: 1px solid rgb(172, 26, 87); */
 }
 
 .card-stats .value {

@@ -6,11 +6,11 @@ import { Link } from 'react-router-dom'
 const GridElement = ({scratch, handleLike}) => {  
   return (
     <div 
-    className={styles.card}
+    className={styles.fullCard}
     key={scratch.id}
     >
         
-        <Link to={`/BigCart/${scratch.id}`}>
+        <Link to={`/userScratches/${scratch.id}`}>
           <div 
             // className={scratch.scratchDate ? [[styles["card-image"]],[styles["scratched"]]].join(' ') : styles["card-image"]}
             className={styles["card-image"]} 

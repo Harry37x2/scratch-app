@@ -1,12 +1,20 @@
 import './App.css';
-import apiRequest  from './apiRequest';
-import UserScratches from './components/UserScratches';
-import BigCart from './components/BigCart';
 import {useState, useEffect} from 'react';
 import { BrowserRouter, Routes, Route  } from 'react-router-dom';
+import apiRequest  from './apiRequest';
 import SharedLayout from './pages/SharedLayout';
+import { AuthProvider } from './contexts/AuthContext';
+import UserScratches from './components/UserScratches';
+import BigCart from './components/BigCart';
 import Loading from './components/Loading';
 import Error from './components/Error';
+import Login from './components/Login';
+import Signup from './components/Signup';
+import ForgotPassword from './components/ForgotPassword';
+import ProtectedRoute from './components/ProtectedRoute';
+import Profile from './components/Profile';
+import UpdateProfile from './components/UpdateProfil';
+
 
 function App() {
   const API_URL = 'http://localhost:3000/scratches';
@@ -87,27 +95,44 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Routes>
-          <Route path='/' element={<SharedLayout/>}>
-            <Route index element={
-              isLoading ? <Loading/> :
-              fetchError ? <Error/> :
-              !fetchError && !isLoading && 
-            <UserScratches
-              scratches={scratches}
-              handleId={handleId}
-              setHandleId={setHandleId}
-              handleLike={handleLike}/>
+        <AuthProvider>
+          <Routes>
+            <Route path='/' element={<SharedLayout/>}>
+              <Route index element={
+                <ProtectedRoute>
+                  <Profile/>
+                </ProtectedRoute>
             }/>
-            <Route path='BigCart/:scratchId' element={
-            <BigCart
-              scratches={scratches}
-              handleScratched={handleScratched}
-              handleId={handleId}
-              setHandleId={setHandleId}/>
-            }/>
-            </Route>
-        </Routes>
+              <Route path='userScratches' element={
+                isLoading ? <Loading/> :
+                fetchError ? <Error/> :
+                !fetchError && !isLoading && 
+                <UserScratches
+                scratches={scratches}
+                handleId={handleId}
+                setHandleId={setHandleId}
+                handleLike={handleLike}/>
+              }/>
+              <Route path='userScratches/:scratchId' element={
+                <ProtectedRoute>
+                  <BigCart
+                    scratches={scratches}
+                    handleScratched={handleScratched}
+                    handleId={handleId}
+                    setHandleId={setHandleId}/>
+                </ProtectedRoute>
+              }/>
+              </Route>
+              <Route path='/signup' element={<Signup/>}/>
+              <Route path='/login' element={<Login/>}/>
+              <Route path='/forgot-password' element={<ForgotPassword/>}/>
+              <Route path='/update-profile' element={
+              <ProtectedRoute>
+                <UpdateProfile/>
+              </ProtectedRoute>
+              }/>
+          </Routes>
+        </AuthProvider>
       </BrowserRouter>
     </div>
   )

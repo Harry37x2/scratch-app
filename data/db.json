@@ -28,8 +28,8 @@
       "id": 4,
       "text": "prank someone",
       "scratchDate": "27.01.2023",
-      "liked": false,
-      "likes": 0,
+      "liked": true,
+      "likes": 1,
       "finished": 1
     },
     {
