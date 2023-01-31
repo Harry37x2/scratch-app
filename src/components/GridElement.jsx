@@ -3,7 +3,7 @@ import styles from './gridElement.module.css'
 import {FcLikePlaceholder, FcLike, FcDislike} from 'react-icons/fc'
 import { Link } from 'react-router-dom'
 
-const GridElement = ({scratch, handleLike}) => {  
+const GridElement = ({scratch, handleLike}) => {
   return (
     <div 
     className={styles.fullCard}
@@ -27,7 +27,11 @@ const GridElement = ({scratch, handleLike}) => {
           
           {scratch.scratchDate ? 
             scratch.liked ? 
-            <FcLike/> 
+            <FcLike
+            onClick={()=>{
+                handleLike(scratch.id)
+              }}
+            /> 
             : 
             <FcLikePlaceholder
               onClick={()=>{

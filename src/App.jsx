@@ -15,9 +15,11 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Profile from './components/Profile';
 import UpdateProfile from './components/UpdateProfil';
 
+import { query, collection, onSnapshot, updateDoc, doc } from '@firebase/firestore';
+import { db } from './firebase';
+
 
 function App() {
-  const API_URL = 'http://localhost:3000/scratches';
 
   const [scratches, setScratches] = useState([]);
   const [handleId, setHandleId] = useState('');
@@ -25,47 +27,41 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(()=>{
-    const fetchItems = async () => {
-      try {
-        const response = await fetch(API_URL);
-        if (!response.ok) throw Error('Expected data not received.')
-        const listItems = await response.json();
-        setScratches(listItems);
-        setFetchError(null)
-      } catch (err) {
-        setFetchError(err.message)
-      } finally {
-        setIsLoading(false);
-      }
+    try {
+    const q = query(collection(db, 'user-scratches'))
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      let listItems = [];
+      querySnapshot.forEach((scratch) => {
+        listItems.push({...scratch.data(),id: scratch.id})
+      });
+      setScratches(listItems)
+      setFetchError(null)
+    })
+    return() => unsubscribe()
+    } catch (err) {
+      setFetchError(err.message)
+    } finally {
+      setIsLoading(false);
     }
-    setTimeout(()=>{
-      (async () => await fetchItems())();
-    }, 500)
+    
   },[])
 
+  // Handle likes and liked; UPDATE in firebase
   const handleLike = async (id) => {
     const likedList = scratches.map((item) => item.id === id ? 
     {...item, 
-      likes: ++item.likes, 
-      liked: true} 
-    : item)
-    setScratches(likedList);
+      likes: item.liked?--item.likes:++item.likes, 
+      liked: !item.liked} 
+      : item)
+      setScratches(likedList);
 
     const myItem = likedList.filter((item) => item.id === id);
-    const updateOptions = {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        liked: myItem[0].liked,
-        likes: myItem[0].likes
-      })
-    };
-    const reqUrl = `${API_URL}/${id}`;
-    const result = await apiRequest(reqUrl, updateOptions);
-    if (result) setFetchError(result)
-  } 
+    
+    await updateDoc(doc(db,'user-scratches', id),{
+      likes: myItem[0].likes,
+      liked: myItem[0].liked,
+    });
+  } ;
 
   const handleScratched = async (id, currentDate) => {
     const scratchesList = scratches.map((item) => item.id === id ? 
@@ -76,19 +72,10 @@ function App() {
     setScratches(scratchesList);
 
     const myItem = scratchesList.filter((item)=> item.id === id);
-    const updateOptions = {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        scratchDate: myItem[0].scratchDate,
-        finished: myItem[0].finished
-      })
-      }
-    const reqUrl = `${API_URL}/${id}`;
-    const result = await apiRequest(reqUrl, updateOptions)
-    if (result) setFetchError(result)
+    await updateDoc(doc(db,'user-scratches', id),{
+      scratchDate: myItem[0].scratchDate,
+      finished: myItem[0].finished,
+    });
     
   } 
 
