@@ -1,6 +1,7 @@
 import firebase from  'firebase/compat/app'
 import 'firebase/compat/auth'
-import { getFirestore } from "firebase/firestore";
+import 'firebase/compat/firestore'
+import { Firestore, getFirestore } from "firebase/firestore";
 
 const app = firebase.initializeApp({
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -13,4 +14,10 @@ const app = firebase.initializeApp({
 
 export const auth = app.auth()
 export const db = getFirestore(app)
+// const firestore = app.firestore()
+// export const db = {
+//     userScratches: firestore.collection('userScratches'),
+//     userBoard: firestore.collection('userBoard'),
+//     getCurrentTimestamp: firebase.firestore.FieldValue.serverTimestamp
+// }
 export default app

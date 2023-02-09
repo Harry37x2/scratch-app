@@ -1,9 +1,9 @@
 import './App.css';
 import {useState, useEffect} from 'react';
 import { BrowserRouter, Routes, Route  } from 'react-router-dom';
-import apiRequest  from './apiRequest';
 import SharedLayout from './pages/SharedLayout';
 import { AuthProvider } from './contexts/AuthContext';
+import { useAuth } from './contexts/AuthContext';
 import UserScratches from './components/UserScratches';
 import BigCart from './components/BigCart';
 import Loading from './components/Loading';
@@ -14,17 +14,17 @@ import ForgotPassword from './components/ForgotPassword';
 import ProtectedRoute from './components/ProtectedRoute';
 import Profile from './components/Profile';
 import UpdateProfile from './components/UpdateProfil';
+import Boards from './pages/Boards';
 
-import { query, collection, onSnapshot, updateDoc, doc } from '@firebase/firestore';
+import { query, collection, onSnapshot, updateDoc, doc, setDoc } from '@firebase/firestore';
 import { db } from './firebase';
 
 
 function App() {
 
   const [scratches, setScratches] = useState([]);
-  const [handleId, setHandleId] = useState('');
   const [fetchError, setFetchError] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);  
 
   useEffect(()=>{
     try {
@@ -47,7 +47,7 @@ function App() {
   },[])
 
   // Handle likes and liked; UPDATE in firebase
-  const handleLike = async (id) => {
+  const handleLike = async (id) => {    
     const likedList = scratches.map((item) => item.id === id ? 
     {...item, 
       likes: item.liked?--item.likes:++item.likes, 
@@ -56,7 +56,6 @@ function App() {
       setScratches(likedList);
 
     const myItem = likedList.filter((item) => item.id === id);
-    
     await updateDoc(doc(db,'user-scratches', id),{
       likes: myItem[0].likes,
       liked: myItem[0].liked,
@@ -76,9 +75,19 @@ function App() {
       scratchDate: myItem[0].scratchDate,
       finished: myItem[0].finished,
     });
-    
   } 
 
+  const createBoard = async (uid, bid) => {
+    await setDoc(doc(db, uid, bid), {
+      name: 'lol',
+    });
+  }
+  // const handleNewBoard = async (id) => {
+  //   console.log('lol')
+  //   await addDoc(db,'new'),{
+  //     name: 'lol',
+  //   };
+  // }
   return (
     <div className="App">
       <BrowserRouter>
@@ -90,14 +99,16 @@ function App() {
                   <Profile/>
                 </ProtectedRoute>
             }/>
+              <Route path='boards' element={
+              <Boards
+                createBoard={createBoard}
+              />}/>
               <Route path='userScratches' element={
                 isLoading ? <Loading/> :
                 fetchError ? <Error/> :
                 !fetchError && !isLoading && 
                 <UserScratches
                 scratches={scratches}
-                handleId={handleId}
-                setHandleId={setHandleId}
                 handleLike={handleLike}/>
               }/>
               <Route path='userScratches/:scratchId' element={
@@ -105,8 +116,7 @@ function App() {
                   <BigCart
                     scratches={scratches}
                     handleScratched={handleScratched}
-                    handleId={handleId}
-                    setHandleId={setHandleId}/>
+                    />
                 </ProtectedRoute>
               }/>
               </Route>

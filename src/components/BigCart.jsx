@@ -30,11 +30,13 @@ const BigCart = ({scratches, handleScratched}) => {
           </div>
         <div className={styles.footer}>
           <Link to={'/userScratches'}>go Back</Link>
+          {current.scratchDate 
+          ? null 
+          : 
           <button
-            onClick={() => {
-              handleScratched(scratchId, currentDate);
-            }}
-          >Scratched !</button>
+            onClick={() => current.scratchDate ? null : handleScratched(scratchId, currentDate)}
+          >Scratched !
+          </button>}
         </div>
       </div>
   );

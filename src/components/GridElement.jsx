@@ -8,8 +8,7 @@ const GridElement = ({scratch, handleLike}) => {
     <div 
     className={styles.fullCard}
     key={scratch.id}
-    >
-        
+    >        
         <Link to={`/userScratches/${scratch.id}`}>
           <div 
             // className={scratch.scratchDate ? [[styles["card-image"]],[styles["scratched"]]].join(' ') : styles["card-image"]}

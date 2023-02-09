@@ -13,6 +13,7 @@ const Header = () => {
           <Link to='/userScratches'><Navbar.Brand>Scratches</Navbar.Brand></Link>
           <Nav className="me-auto">
             <Nav.Link as={Link} to='/'>Profile</Nav.Link>
+            <Nav.Link as={Link} to='boards'>Boards</Nav.Link>
           </Nav>
         </Container>
       </Navbar>
