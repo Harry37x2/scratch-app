@@ -24,27 +24,56 @@ function App() {
 
   const [scratches, setScratches] = useState([]);
   const [fetchError, setFetchError] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);  
+  const [isLoading, setIsLoading] = useState(true);
+  const [collect, setCollect] = useState('')
+  let outputUserDB
+  let outputGlobalDB
 
-  useEffect(()=>{
-    try {
-    const q = query(collection(db, 'user-scratches'))
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      let listItems = [];
-      querySnapshot.forEach((scratch) => {
-        listItems.push({...scratch.data(),id: scratch.id})
-      });
-      setScratches(listItems)
+useEffect(()=>{  
+  try {
+    const unsub = onSnapshot(doc(db, "6eiz8pW2B0XXOMdQlvAZU1nPmsy2", "board01"), (doc) => {
+      outputUserDB = Object.keys(doc.data()).map(key => {
+        return {
+          key: key,
+          value: doc.data()[key]
+        };
+      })
       setFetchError(null)
-    })
-    return() => unsubscribe()
-    } catch (err) {
-      setFetchError(err.message)
-    } finally {
-      setIsLoading(false);
-    }
-    
-  },[])
+    })    
+  } catch (err) {
+    setFetchError(err.message)
+  } finally {
+    setIsLoading(false);
+  }    
+},[collect])
+
+useEffect(() => {
+  try {
+    const unsubb = onSnapshot(doc(db, "board01", 'JdxPz7Ku60DnCuicpIgq'), (doc) => {
+      outputGlobalDB = Object.keys(doc.data()).map(key => {
+        return {
+          key: key,
+          value: doc.data()[key]
+        };
+      })          
+      // marge fileds from global Db with user Db
+      outputUserDB[0].value[outputGlobalDB[0].key]=[(outputGlobalDB[0].value)].toLocaleString()
+      outputUserDB[0].value[outputGlobalDB[1].key]=[(outputGlobalDB[1].value)].toLocaleString()
+      outputUserDB[0].value[outputGlobalDB[2].key]=[(outputGlobalDB[2].value)].toLocaleString()
+      // for (let i=0; i<=outputGlobalDB.length; i++) {
+        //   outputUserDB[0].value[outputGlobalDB[i].key]=[(outputGlobalDB[i].value)].toLocaleString()
+        // }       
+        setScratches(outputUserDB)
+        console.log(outputUserDB)
+      console.log(outputGlobalDB)
+      setFetchError(null)
+    })    
+  } catch (err) {
+    setFetchError(err.message)
+  } finally {
+    setIsLoading(false);
+  }
+},[collect])
 
   // Handle likes and liked; UPDATE in firebase
   const handleLike = async (id) => {    
@@ -56,7 +85,7 @@ function App() {
       setScratches(likedList);
 
     const myItem = likedList.filter((item) => item.id === id);
-    await updateDoc(doc(db,'user-scratches', id),{
+    await updateDoc(doc(db, collect, id),{
       likes: myItem[0].likes,
       liked: myItem[0].liked,
     });
@@ -71,23 +100,56 @@ function App() {
     setScratches(scratchesList);
 
     const myItem = scratchesList.filter((item)=> item.id === id);
-    await updateDoc(doc(db,'user-scratches', id),{
+    await updateDoc(doc(db, collect, id),{
       scratchDate: myItem[0].scratchDate,
       finished: myItem[0].finished,
     });
   } 
 
-  const createBoard = async (uid, bid) => {
-    await setDoc(doc(db, uid, bid), {
-      name: 'lol',
-    });
+  // Creating user board with 3 scratches and only with ID from db boards  
+  
+  //uid = userId; bid = boardID
+  let queryItems = []
+  const randomItems = []
+  let docData = {};  
+
+  // Query ID off all scratches from db.
+  const handleCreateBoard = async (uid, bid) => {
+    setCollect(uid)
+    try {
+      const q = query(collection(db, bid))
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        querySnapshot.forEach((scratch) => {
+          queryItems.push(scratch.id)
+        });        
+        
+        //random 3 scratches for user
+        for (let i=0; i<=2; i++) {
+          let index = Math.floor(Math.random()*queryItems.length)
+          randomItems.push(queryItems[index])
+          queryItems.splice(index,1)
+        }
+
+        //add fields to choosen scratches 
+        docData = Object.fromEntries(randomItems.map(scratch => 
+          [scratch, {
+            userScratchIds: scratch,
+            scratchDate: '',
+            liked: false
+          }])          
+        ) 
+      setDoc(doc(db, uid, bid), docData
+      );
+      setFetchError(null)
+    })
+    return() => unsubscribe()
+    } catch (err) {
+      setFetchError(err.message)
+    } finally {
+      setIsLoading(false);
+    }    
   }
-  // const handleNewBoard = async (id) => {
-  //   console.log('lol')
-  //   await addDoc(db,'new'),{
-  //     name: 'lol',
-  //   };
-  // }
+
   return (
     <div className="App">
       <BrowserRouter>
@@ -101,7 +163,7 @@ function App() {
             }/>
               <Route path='boards' element={
               <Boards
-                createBoard={createBoard}
+                handleCreateBoard={handleCreateBoard}
               />}/>
               <Route path='userScratches' element={
                 isLoading ? <Loading/> :

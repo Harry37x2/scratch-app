@@ -2,14 +2,15 @@ import React from 'react'
 import styles from './gridElement.module.css'
 import {FcLikePlaceholder, FcLike, FcDislike} from 'react-icons/fc'
 import { Link } from 'react-router-dom'
+// works with new.
 
 const GridElement = ({scratch, handleLike}) => {
   return (
     <div 
     className={styles.fullCard}
-    key={scratch.id}
+    key={scratch.key}
     >        
-        <Link to={`/userScratches/${scratch.id}`}>
+        <Link to={`/userScratches/${scratch.key}`}>
           <div 
             // className={scratch.scratchDate ? [[styles["card-image"]],[styles["scratched"]]].join(' ') : styles["card-image"]}
             className={styles["card-image"]} 
@@ -21,20 +22,20 @@ const GridElement = ({scratch, handleLike}) => {
         </Link>
         
         <div className={styles["card-text"]}>
-          <span className={styles.date}>{scratch.scratchDate ? `${scratch.scratchDate}` : 'data'}</span>
-          <h2>{scratch.text}</h2>
+          <span className={styles.date}>{scratch.value.scratchDate ? `${scratch.value.scratchDate}` : 'data'}</span>
+          <h2>{scratch.value.text}</h2>
           
-          {scratch.scratchDate ? 
-            scratch.liked ? 
+          {scratch.value.scratchDate ? 
+            scratch.value.liked ? 
             <FcLike
             onClick={()=>{
-                handleLike(scratch.id)
+                handleLike(scratch.value.id)
               }}
             /> 
             : 
             <FcLikePlaceholder
               onClick={()=>{
-                handleLike(scratch.id)
+                handleLike(scratch.value.id)
               }}
             /> 
           : 

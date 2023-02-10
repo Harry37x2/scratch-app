@@ -43,3 +43,27 @@ const BigCart = ({scratches, handleScratched}) => {
 }
 
 export default BigCart
+
+
+
+// useEffect(()=>{
+//     try {
+//     const unsub = onSnapshot(doc(db, "6eiz8pW2B0XXOMdQlvAZU1nPmsy2", "board01"), (doc) => {
+//       let output = Object.keys(doc.data()).map(key => {
+//         return {
+//           key: key,
+//           value: doc.data()[key]
+//         };
+//       })      
+//       setScratches(output)
+//       console.log(scratches)
+//       setFetchError(null)
+//     })
+    
+//     } catch (err) {
+//       setFetchError(err.message)
+//     } finally {
+//       setIsLoading(false);
+//     }
+    
+//   },[collect])

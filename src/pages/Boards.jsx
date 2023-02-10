@@ -5,7 +5,7 @@ import { Badge } from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';    
 
 
-const Boards = ({createBoard}) => {
+const Boards = ({handleCreateBoard}) => {
     const { currentUser } = useAuth();
    return (
     <>
@@ -22,30 +22,32 @@ const Boards = ({createBoard}) => {
         </Card.Text>
         <Button 
           variant="primary"
-          onClick={() => createBoard(currentUser.uid, '01')}
+          onClick={() => {handleCreateBoard(currentUser.uid, 'board01')}}
         >Go!</Button>
       </Card.Body>
       <Card.Footer className="text">37/100</Card.Footer>
     </Card>
 
-     <Card className="text-center mb-4 w-50" bg={'ligth'}>
+    <Card className="text-center mb-4 w-50" bg={'ligth'}>
       <Card.Header>
         <Badge bg="secondary" as="button">
             New
         </Badge>
       </Card.Header>
       <Card.Body>
-        <Card.Title>50 date ideas</Card.Title>
+        <Card.Title>100 moments together</Card.Title>
         <Card.Text>
           Scratch, like and share with others !.
         </Card.Text>
         <Button 
           variant="primary"
-          onClick={() => createBoard(currentUser.uid, '02')}
+          onClick={() => {handleCreateBoard(currentUser.uid, 'board02')}}
         >Go!</Button>
       </Card.Body>
-      <Card.Footer className="text">15/100</Card.Footer>
+      <Card.Footer className="text">37/100</Card.Footer>
     </Card>
+
+     
 {/*
     <Card className="text-center" bg={'secondary'}>
       <Card.Header>Featured</Card.Header>
