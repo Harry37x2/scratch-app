@@ -26,12 +26,14 @@ function App() {
   const [fetchError, setFetchError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [collect, setCollect] = useState('')
+  const [board, setBoard] = useState('')
   let outputUserDB
-  let outputGlobalDB
+  let outputGlobalDB = {}
 
+// query all scratches from user db
 useEffect(()=>{  
   try {
-    const unsub = onSnapshot(doc(db, "6eiz8pW2B0XXOMdQlvAZU1nPmsy2", "board01"), (doc) => {
+    const unsub = onSnapshot(doc(db, collect, board), (doc) => {
       outputUserDB = Object.keys(doc.data()).map(key => {
         return {
           key: key,
@@ -39,43 +41,78 @@ useEffect(()=>{
         };
       })
       setFetchError(null)
+      console.log(outputUserDB)
+      return outputUserDB
     })    
   } catch (err) {
     setFetchError(err.message)
   } finally {
     setIsLoading(false);
   }    
-},[collect])
+},[board])
 
+// query all scratches from global db
 useEffect(() => {
   try {
-    const unsubb = onSnapshot(doc(db, "board01", 'JdxPz7Ku60DnCuicpIgq'), (doc) => {
-      outputGlobalDB = Object.keys(doc.data()).map(key => {
-        return {
-          key: key,
-          value: doc.data()[key]
-        };
-      })          
-      // marge fileds from global Db with user Db
-      outputUserDB[0].value[outputGlobalDB[0].key]=[(outputGlobalDB[0].value)].toLocaleString()
-      outputUserDB[0].value[outputGlobalDB[1].key]=[(outputGlobalDB[1].value)].toLocaleString()
-      outputUserDB[0].value[outputGlobalDB[2].key]=[(outputGlobalDB[2].value)].toLocaleString()
-      // for (let i=0; i<=outputGlobalDB.length; i++) {
-        //   outputUserDB[0].value[outputGlobalDB[i].key]=[(outputGlobalDB[i].value)].toLocaleString()
-        // }       
-        setScratches(outputUserDB)
-        console.log(outputUserDB)
-      console.log(outputGlobalDB)
-      setFetchError(null)
-    })    
+    const q = query(collection(db, board));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      let arr = []  
+      querySnapshot.forEach((doc) => {
+        arr.push(doc.id)
+        // arr.push(Object.keys(doc.id, doc.data()).map(key => {
+        arr.push(Object.keys(doc.data()).map(key => {
+          return {
+            key: key,
+            value: doc.data()[key]
+          };
+        }))
+      });
+      //assigning it to even
+      console.log(arr)
+      let odd=[]
+      let even=[]
+      for (let i=0; i<arr.length; i++) {
+        if (i % 2 == 0){
+        odd.push(arr[i]);
+      }else{
+        even.push(arr[i]);
+        }
+      }
+      for (let i=0; i<odd.length; i++) {
+        even[i]['key']=odd[i]
+      }
+      console.log(even)
+      return even
+    });
   } catch (err) {
     setFetchError(err.message)
   } finally {
     setIsLoading(false);
   }
-},[collect])
+},[board])
+
+    // const unsubb = onSnapshot(doc(db, board, 'JdxPz7Ku60DnCuicpIgq'), (doc) => {
+    //   outputGlobalDB = Object.keys(doc.data()).map(key => {
+    //     return {
+    //       key: key,
+    //       value: doc.data()[key]
+    //     };
+    //   })          
+    //   // marge fileds from global Db with user Db
+    //   outputUserDB[0].value[outputGlobalDB[0].key]=[(outputGlobalDB[0].value)].toLocaleString()
+    //   outputUserDB[0].value[outputGlobalDB[1].key]=[(outputGlobalDB[1].value)].toLocaleString()
+    //   outputUserDB[0].value[outputGlobalDB[2].key]=[(outputGlobalDB[2].value)].toLocaleString()
+    //   // for (let i=0; i<=outputGlobalDB.length; i++) {
+    //     //   outputUserDB[0].value[outputGlobalDB[i].key]=[(outputGlobalDB[i].value)].toLocaleString()
+    //     // }       
+    //     setScratches(outputUserDB)
+    //     console.log(outputUserDB)
+    //   console.log(outputGlobalDB)
+    //   setFetchError(null)
+    // })    
 
   // Handle likes and liked; UPDATE in firebase
+  
   const handleLike = async (id) => {    
     const likedList = scratches.map((item) => item.id === id ? 
     {...item, 
@@ -116,6 +153,7 @@ useEffect(() => {
   // Query ID off all scratches from db.
   const handleCreateBoard = async (uid, bid) => {
     setCollect(uid)
+    setBoard(bid)
     try {
       const q = query(collection(db, bid))
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
